@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KrishMithr — Smart Farming. Better Decisions. Healthier Crops. Explore soils, crops, and disease management." />
+  <title>KrishMithr — Smart Farming Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header" role="banner">
+    <div class="container header-inner">
+      <a href="#home" class="logo" aria-label="KrishMithr Home">
+        <span class="logo-icon" aria-hidden="true">🌱</span>
+        <span class="logo-text">KrishMithr</span>
+      </a>
+
+      <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link active" data-nav="home">Home</a></li>
+          <li><a href="#soil-section" class="nav-link" data-nav="soil">Soil</a></li>
+          <li><a href="#crops-section" class="nav-link" data-nav="crops">Crops</a></li>
+          <li><a href="#diseases-section" class="nav-link" data-nav="diseases">Diseases</a></li>
+          <li><a href="#favorites-section" class="nav-link" data-nav="favorites">Favorites</a></li>
+          <li><a href="#about" class="nav-link" data-nav="about">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <div class="search-wrap">
+          <label for="search-input" class="sr-only">Search soil, crop or disease</label>
+          <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+          <input
+            type="search"
+            id="search-input"
+            class="search-input"
+            placeholder="Search soil, crop or disease..."
+            autocomplete="off"
+            aria-autocomplete="list"
+            aria-controls="search-results"
+            aria-expanded="false"
+          />
+          <div id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></div>
+        </div>
+
+        <button type="button" id="dark-toggle" class="icon-btn" aria-label="Toggle dark mode" title="Dark Mode">
+          <i class="fa-solid fa-moon" aria-hidden="true"></i>
+        </button>
+
+        <button type="button" id="menu-toggle" class="icon-btn menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-bg" role="img" aria-label="Green agricultural landscape at sunset"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <p class="hero-tagline">Smart Farming. Better Decisions. Healthier Crops.</p>
+        <h1 id="hero-title">Discover the Right Crop for Your Soil</h1>
+        <p class="hero-sub">
+          Select your soil type and explore suitable crops, common diseases, symptoms and prevention methods.
+        </p>
+        <a href="#soil-section" class="btn btn-primary btn-lg" id="explore-soils-btn">
+          Explore Soils <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== PROGRESS INDICATOR ========== -->
+    <div class="progress-bar-wrap" id="progress-wrap" aria-label="Selection progress">
+      <div class="container">
+        <ol class="progress-steps" id="progress-steps">
+          <li class="progress-step active" data-step="1" id="step-soil">
+            <span class="step-num" aria-hidden="true">1</span>
+            <span class="step-label">Soil</span>
+          </li>
+          <li class="progress-connector" aria-hidden="true"></li>
+          <li class="progress-step" data-step="2" id="step-crop">
+            <span class="step-num" aria-hidden="true">2</span>
+            <span class="step-label">Crop</span>
+          </li>
+          <li class="progress-connector" aria-hidden="true"></li>
+          <li class="progress-step" data-step="3" id="step-disease">
+            <span class="step-num" aria-hidden="true">3</span>
+            <span class="step-label">Disease</span>
+          </li>
+        </ol>
+        <div class="selection-summary" id="selection-summary" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- ========== SOIL SELECTION ========== -->
+    <section class="section" id="soil-section" aria-labelledby="soil-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="step-badge">Step 1</span>
+          <h2 id="soil-heading">Select Your Soil</h2>
+          <p class="section-sub">Choose the soil type available in your field.</p>
+        </div>
+        <div class="cards-grid" id="soil-grid" role="list"></div>
+      </div>
+    </section>
+
+    <!-- ========== CROP SELECTION ========== -->
+    <section class="section section-alt hidden" id="crops-section" aria-labelledby="crops-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="step-badge">Step 2</span>
+          <h2 id="crops-heading">Select Your Crop</h2>
+          <p class="section-sub" id="crops-subtitle">Crops suitable for your soil</p>
+        </div>
+
+        <div class="filters-bar" id="crop-filters">
+          <div class="filter-search">
+            <label for="crop-search" class="sr-only">Search crops</label>
+            <i class="fa-solid fa-filter" aria-hidden="true"></i>
+            <input type="search" id="crop-search" placeholder="Search crops..." aria-label="Search crops" />
+          </div>
+          <div class="season-filters" role="group" aria-label="Filter by season">
+            <button type="button" class="chip active" data-season="All">All</button>
+            <button type="button" class="chip" data-season="Kharif">Kharif</button>
+            <button type="button" class="chip" data-season="Rabi">Rabi</button>
+            <button type="button" class="chip" data-season="Zaid">Zaid</button>
+            <button type="button" class="chip" data-season="Year-round">Year-round</button>
+          </div>
+        </div>
+
+        <div class="cards-grid" id="crop-grid" role="list"></div>
+
+        <div class="section-actions">
+          <button type="button" class="btn btn-outline" id="back-to-soil">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Soils
+          </button>
+          <button type="button" class="btn btn-ghost" id="start-again-crops">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Start Again
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DISEASE SELECTION ========== -->
+    <section class="section hidden" id="diseases-section" aria-labelledby="diseases-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="step-badge">Step 3</span>
+          <h2 id="diseases-heading">Common Diseases</h2>
+          <p class="section-sub" id="diseases-subtitle">Diseases affecting your crop</p>
+        </div>
+        <div class="cards-grid" id="disease-grid" role="list"></div>
+        <div class="section-actions">
+          <button type="button" class="btn btn-outline" id="back-to-crops">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Crops
+          </button>
+          <button type="button" class="btn btn-ghost" id="start-again-diseases">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Start Again
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DISEASE DETAILS ========== -->
+    <section class="section section-alt hidden" id="disease-details-section" aria-labelledby="disease-detail-title">
+      <div class="container">
+        <article class="disease-detail-card" id="disease-detail-content">
+          <!-- Filled by JS -->
+        </article>
+        <div class="section-actions">
+          <button type="button" class="btn btn-outline" id="back-to-diseases">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to Diseases
+          </button>
+          <button type="button" class="btn btn-ghost" id="start-again-details">
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Start Again
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FAVORITES ========== -->
+    <section class="section" id="favorites-section" aria-labelledby="favorites-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="step-badge"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+          <h2 id="favorites-heading">My Favorites</h2>
+          <p class="section-sub">Crops you have marked for quick access.</p>
+        </div>
+        <div class="cards-grid" id="favorites-grid" role="list"></div>
+        <p class="empty-state" id="favorites-empty">No favorites yet. Tap the ⭐ on any crop card to save it here.</p>
+      </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="section section-alt" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="step-badge">About</span>
+          <h2 id="about-heading">About KrishMithr</h2>
+          <p class="section-sub about-text">
+            KrishMithr is an educational agriculture platform designed to help users understand the relationship between soil, crops and common crop diseases.
+            Follow the guided flow — Soil → Crop → Disease — to make smarter farming decisions.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🌱</div>
+            <h3>Soil Analysis</h3>
+            <p>Learn which soil types suit different regions and which crops thrive in each.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🌾</div>
+            <h3>Crop Information</h3>
+            <p>Explore growing seasons, water needs, and crop duration for informed planning.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🦠</div>
+            <h3>Disease Awareness</h3>
+            <p>Identify symptoms, causes, and prevention practices for healthier harvests.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="logo footer-logo">
+          <span class="logo-icon" aria-hidden="true">🌱</span>
+          <span class="logo-text">KrishMithr</span>
+        </div>
+        <p class="footer-tagline">Smart Farming. Better Decisions. Healthier Crops.</p>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#soil-section">Soil</a></li>
+          <li><a href="#crops-section">Crops</a></li>
+          <li><a href="#diseases-section">Diseases</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+      <div class="footer-note">
+        <h3>Disclaimer</h3>
+        <p>
+          Information provided by KrishMithr is for general educational purposes.
+          Consult local agricultural experts for crop-specific recommendations.
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 KrishMithr. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "krishmithr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KrishMithr agriculture learning platform",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node --env-file=.env server/server.js",
+    "db:seed": "node --env-file=.env scripts/seed-catalog.js",
+    "admin:create": "node --env-file=.env scripts/create-admin.js"
+  },
+  "engines": { "node": ">=20.6" },
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mongodb": "^6.17.0",
+    "multer": "^2.0.2"
+  }
+}
