@@ -100,8 +100,14 @@
         try { response = await fetch(url, { ...options, credentials:'same-origin', headers, body }); }
         catch (_) { throw new Error(connectionMessage); }
         if (response.status === 204) return {};
+        const responseType = response.headers.get('content-type') || 'unknown content type';
         const result = await response.json().catch(() => null);
-        if (!result || typeof result !== 'object') throw new Error(localPageIsNotUsingAppServer ? connectionMessage : 'The site returned an unexpected server response. Refresh and try again.');
+        if (!result || typeof result !== 'object') {
+          const requestId = response.headers.get('x-vercel-id');
+          console.error('KrishMithr API returned a non-JSON response.', { url, status:response.status, contentType:responseType, requestId });
+          if (localPageIsNotUsingAppServer) throw new Error(connectionMessage);
+          throw new Error(`The API returned HTTP ${response.status} (${responseType}). Check the Vercel Runtime Logs${requestId ? ` for request ${requestId}` : ''}.`);
+        }
         if (!response.ok) throw Object.assign(new Error(result.message || 'The request could not be completed. Please try again.'), { status:response.status, code:result.code });
         return result;
       }
