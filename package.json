@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "KrishMithr agriculture learning platform",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
     "start": "node --env-file=.env server/server.js",
     "db:seed": "node --env-file=.env scripts/seed-catalog.js",

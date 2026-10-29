@@ -6,6 +6,8 @@ KrishMithr is an account-backed agriculture field guide. Users move through **so
 
 The live entry point is the repository root `index.html` with same-origin `app.js`, served by `server/server.js`. The older `AgriCare/index.html`, `script.js`, and `style.css` are archived reference files and are not loaded by the current app.
 
+Vercel uses the root `server.js` Express entry point and `vercel.json` includes the HTML and browser script in its function bundle. API requests establish a cached MongoDB connection before handling the route. Configure `MONGODB_URI`, `MONGODB_DATABASE=KrishMithr`, `SESSION_TTL_DAYS=7`, `NODE_ENV=production`, and `TRUST_PROXY=1` in Vercel. Uploaded files use the function's temporary directory on Vercel and are not durable; configure persistent object storage before relying on admin uploads in production.
+
 The application includes:
 
 - Email sign-up/sign-in with duplicate-email feedback and server-side password hashing.

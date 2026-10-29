@@ -4,12 +4,27 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 let client;
 let database;
+let connectionPromise;
 
 function hasPlaceholder(value) {
   return !value || /<[^>]+>|\b(db_password|your_password|changeme)\b/i.test(value);
 }
 
 async function connectDatabase() {
+  if (connectionPromise) return connectionPromise;
+  if (database) return database;
+  connectionPromise = initializeDatabase();
+  try { return await connectionPromise; }
+  catch (error) {
+    if (client) await client.close().catch(() => {});
+    client = undefined;
+    database = undefined;
+    connectionPromise = undefined;
+    throw error;
+  }
+}
+
+async function initializeDatabase() {
   const uri = process.env.MONGODB_URI;
   const databaseName = process.env.MONGODB_DATABASE || 'KrishMithr';
   if (databaseName !== 'KrishMithr') throw new Error('MONGODB_DATABASE must be KrishMithr.');
@@ -52,6 +67,7 @@ async function closeDatabase() {
   if (client) await client.close();
   client = undefined;
   database = undefined;
+  connectionPromise = undefined;
 }
 
 module.exports = { connectDatabase, getDatabase, closeDatabase };

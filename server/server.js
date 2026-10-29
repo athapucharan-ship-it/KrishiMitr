@@ -2,6 +2,7 @@
 
 const path = require('node:path');
 const fs = require('node:fs');
+const os = require('node:os');
 const { randomUUID } = require('node:crypto');
 const express = require('express');
 const helmet = require('helmet');
@@ -12,7 +13,7 @@ const auth = require('./auth');
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 const root = path.resolve(__dirname, '..');
-const uploadDir = path.join(root, 'data', 'uploads');
+const uploadDir = process.env.VERCEL ? path.join(os.tmpdir(), 'krishmithr-uploads') : path.join(root, 'data', 'uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
 
 app.disable('x-powered-by');
@@ -77,6 +78,10 @@ function requireValidEntity(req, res, next) {
 }
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', service: 'KrishMithr' }));
+app.use('/api', async (_req, _res, next) => {
+  try { await connectDatabase(); next(); }
+  catch (error) { next(error); }
+});
 app.get('/api/brand', async (_req,res) => {
   const brand=await getDatabase().collection('site_settings').findOne({id:'public-site',published:true},{projection:{_id:0,authImage:1,authTitle:1,authDescription:1}});
   res.json({brand:brand||{}});

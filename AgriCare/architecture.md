@@ -126,6 +126,7 @@ The editor console provides overview counts; create/edit/delete flows for soils,
 ## 8. Deployment and operational requirements
 
 - Run with `npm install`, then `npm run db:seed`, then `npm start`.
+- Vercel deploys through the root `server.js` Express entry point. `vercel.json` includes the HTML and browser script in the function bundle, and API middleware initializes one cached MongoDB connection before database requests. Configure the production environment variables in Vercel; function-local media uploads are temporary and need persistent object storage for production use.
 - `npm run admin:create` provisions the first administrator using temporary environment values; remove the one-time password afterward.
 - The Node server serves the app and API from the same origin. Deploy behind HTTPS; set `NODE_ENV=production` and configure `TRUST_PROXY=1` only behind a trusted proxy.
 - Security headers are configured with Helmet and a CSP that permits same-origin scripts/API, inline styles, HTTPS images, Google Fonts, and privacy-enhanced YouTube frames. App code loads from `/app.js` under `script-src 'self'`.
